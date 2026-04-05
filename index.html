@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ACCA BT — Complete Study App by Rowshan Mashrafi</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=Libre+Baskerville:ital,wght@0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0e0f14; --s1:#14151c; --s2:#1c1d26; --s3:#23242f;
+  --border:#2e2f3e; --border2:#3a3b4e;
+  --teal:#00d4b4; --amber:#f5a623; --violet:#a78bfa;
+  --red:#ff5f5f; --green:#4ade80;
+  --text:#eef0f8; --muted:#8889a8; --dim:#5a5b78;
+  --r:10px; --r2:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Sora',sans-serif;min-height:100vh;overflow-x:hidden;}
+
+/* ── SCREENS ── */
+.screen{display:none;min-height:100vh;flex-direction:column;}
+.screen.active{display:flex;}
+
+/* ── HOME ── */
+#home{align-items:center;justify-content:flex-start;padding:0;overflow-y:auto;}
+.home-hero{width:100%;padding:48px 24px 32px;text-align:center;background:linear-gradient(180deg,#0e0f14 0%,#12131a 100%);position:relative;overflow:hidden;}
+.hero-glow{position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:340px;height:260px;background:radial-gradient(ellipse,rgba(0,212,180,0.12) 0%,transparent 70%);pointer-events:none;}
+.badge{display:inline-flex;align-items:center;gap:6px;background:rgba(0,212,180,0.12);border:1px solid rgba(0,212,180,0.3);color:var(--teal);font-family:'JetBrains Mono',monospace;font-size:11px;padding:5px 14px;border-radius:20px;letter-spacing:2px;margin-bottom:20px;}
+.hero-title{font-family:'Libre Baskerville',serif;font-size:38px;line-height:1.1;margin-bottom:10px;}
+.hero-title em{font-style:italic;color:var(--teal);}
+.hero-sub{color:var(--muted);font-size:13px;line-height:1.8;max-width:320px;margin:0 auto 28px;}
+.founder{font-size:11px;color:var(--dim);margin-top:4px;letter-spacing:0.5px;}
+.founder span{color:var(--amber);}
+
+/* progress strip */
+.progress-strip{width:100%;max-width:360px;margin:16px auto 0;}
+.ps-row{display:flex;justify-content:space-between;font-size:11px;color:var(--dim);margin-bottom:5px;font-family:'JetBrains Mono',monospace;}
+.ps-bar{height:4px;background:var(--s3);border-radius:2px;overflow:hidden;}
+.ps-fill{height:100%;background:var(--teal);border-radius:2px;transition:width .6s;}
+
+/* nav cards */
+.nav-section{width:100%;padding:20px 16px 32px;max-width:440px;margin:0 auto;}
+.nav-section h2{font-size:11px;letter-spacing:2px;color:var(--dim);font-family:'JetBrains Mono',monospace;margin-bottom:14px;text-transform:uppercase;}
+.nav-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.nc{background:var(--s1);border:1px solid var(--border);border-radius:var(--r2);padding:18px 14px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;}
+.nc::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,212,180,0.04),transparent);opacity:0;transition:opacity .2s;}
+.nc:hover{border-color:var(--teal);transform:translateY(-2px);}
+.nc:hover::before{opacity:1;}
+.nc.wide{grid-column:span 2;display:flex;align-items:center;gap:16px;background:linear-gradient(135deg,rgba(0,212,180,0.1),rgba(0,212,180,0.03));border-color:rgba(0,212,180,0.4);}
+.nc .ico{font-size:26px;margin-bottom:10px;display:block;}
+.nc.wide .ico{font-size:30px;margin-bottom:0;flex-shrink:0;}
+.nc h3{font-size:13px;font-weight:600;color:var(--text);margin-bottom:3px;}
+.nc p{font-size:11px;color:var(--muted);line-height:1.5;}
+
+/* chapter quick nav */
+.chapter-chips{display:flex;flex-wrap:wrap;gap:6px;padding:0 16px 24px;max-width:440px;margin:0 auto;width:100%;}
+.chip{background:var(--s2);border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--muted);cursor:pointer;transition:all .2s;}
+.chip:hover,.chip.done{border-color:var(--teal);color:var(--teal);background:rgba(0,212,180,0.08);}
+
+/* ── PAGE HEADER ── */
+.ph{padding:16px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;background:var(--s1);flex-shrink:0;}
+.back{background:none;border:1px solid var(--border);color:var(--muted);width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.back:hover{border-color:var(--text);color:var(--text);}
+.ph-title{font-family:'Libre Baskerville',serif;font-size:20px;color:var(--text);}
+.ph-sub{font-size:11px;color:var(--muted);margin-top:1px;}
+
+/* ── CHAPTER LIST ── */
+#chapters{background:var(--bg);}
+.ch-list{padding:14px 16px;overflow-y:auto;}
+.ch-card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r2);padding:16px;margin-bottom:10px;cursor:pointer;transition:all .2s;display:flex;align-items:flex-start;gap:14px;}
+.ch-card:hover{border-color:var(--teal);background:var(--s2);}
+.ch-card.done{border-color:rgba(74,222,128,0.4);}
+.ch-num{background:var(--s3);border:1px solid var(--border2);width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--teal);flex-shrink:0;font-weight:500;}
+.ch-card.done .ch-num{background:rgba(74,222,128,0.12);border-color:var(--green);color:var(--green);}
+.ch-info h3{font-size:14px;font-weight:600;margin-bottom:4px;}
+.ch-info p{font-size:12px;color:var(--muted);line-height:1.4;}
+.ch-pills{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;}
+.pill{font-size:10px;font-family:'JetBrains Mono',monospace;padding:2px 8px;border-radius:10px;border:1px solid var(--border2);color:var(--dim);}
+.pill.has{border-color:rgba(0,212,180,0.3);color:var(--teal);background:rgba(0,212,180,0.07);}
+
+/* ── CHAPTER DETAIL ── */
+#chapter-detail{background:var(--bg);}
+.ch-tabs{display:flex;border-bottom:1px solid var(--border);background:var(--s1);flex-shrink:0;overflow-x:auto;}
+.ch-tab{padding:12px 18px;font-size:12px;font-weight:500;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;}
+.ch-tab.active{color:var(--teal);border-bottom-color:var(--teal);}
+.tab-pane{display:none;padding:20px;overflow-y:auto;flex:1;}
+.tab-pane.active{display:block;}
+
+/* lecture */
+.lecture-section{margin-bottom:28px;}
+.ls-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--teal);text-transform:uppercase;margin-bottom:10px;}
+.ls-title{font-family:'Libre Baskerville',serif;font-size:22px;color:var(--text);margin-bottom:14px;line-height:1.3;}
+.ls-intro{font-size:13px;color:var(--muted);line-height:1.8;margin-bottom:20px;}
+.lecture-block{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:16px;margin-bottom:14px;}
+.lb-heading{font-size:14px;font-weight:600;color:var(--text);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.lb-heading .dot{width:6px;height:6px;border-radius:50%;background:var(--teal);flex-shrink:0;}
+.lb-body{font-size:13px;color:var(--muted);line-height:1.8;}
+.lb-body strong{color:var(--text);}
+.lb-body ul{padding-left:0;list-style:none;margin-top:8px;}
+.lb-body ul li{padding:5px 0 5px 16px;position:relative;border-bottom:1px solid var(--border);}
+.lb-body ul li:last-child{border-bottom:none;}
+.lb-body ul li::before{content:'›';position:absolute;left:0;color:var(--teal);}
+.example-box{background:rgba(245,166,35,0.07);border:1px solid rgba(245,166,35,0.25);border-radius:var(--r);padding:14px;margin-top:12px;}
+.eb-label{font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--amber);letter-spacing:1px;margin-bottom:6px;text-transform:uppercase;}
+.eb-body{font-size:13px;color:var(--text);line-height:1.7;}
+
+/* notes */
+.notes-section{margin-bottom:20px;}
+.note-card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:14px;margin-bottom:10px;}
+.nc-header{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.nc-icon{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.nc-icon.blue{background:rgba(167,139,250,0.15);}
+.nc-icon.teal{background:rgba(0,212,180,0.12);}
+.nc-icon.amber{background:rgba(245,166,35,0.12);}
+.nc-title{font-size:13px;font-weight:600;color:var(--text);}
+.nc-body{font-size:12px;color:var(--muted);line-height:1.7;}
+.nc-body strong{color:var(--text);}
+
+/* formulas */
+.formula-card{background:var(--s2);border:1px solid var(--border2);border-radius:var(--r);padding:14px;margin-bottom:10px;position:relative;overflow:hidden;}
+.formula-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--violet);}
+.fc-title{font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--violet);margin-bottom:8px;letter-spacing:1px;text-transform:uppercase;}
+.fc-formula{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--text);line-height:1.9;background:var(--s3);border-radius:6px;padding:12px;}
+.fc-note{font-size:11px;color:var(--muted);margin-top:8px;line-height:1.6;}
+
+/* exam tips */
+.tip-box{background:linear-gradient(135deg,rgba(0,212,180,0.06),rgba(0,212,180,0.02));border:1px solid rgba(0,212,180,0.25);border-radius:var(--r);padding:14px;margin-bottom:12px;}
+.tip-label{font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--teal);letter-spacing:1px;margin-bottom:6px;text-transform:uppercase;}
+.tip-body{font-size:13px;color:var(--text);line-height:1.7;}
+
+/* chapter mock setup */
+.mock-setup-inner{padding:20px;}
+.ms-title{font-family:'Libre Baskerville',serif;font-size:20px;margin-bottom:8px;}
+.ms-sub{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:20px;}
+.q-count-row{display:flex;gap:8px;margin-bottom:20px;}
+.qc-btn{flex:1;background:var(--s2);border:1.5px solid var(--border);border-radius:8px;padding:12px 6px;text-align:center;cursor:pointer;transition:all .2s;}
+.qc-btn.sel,.qc-btn:hover{border-color:var(--teal);background:rgba(0,212,180,0.08);}
+.qc-btn .n{font-family:'JetBrains Mono',monospace;font-size:22px;color:var(--teal);}
+.qc-btn .l{font-size:10px;color:var(--muted);margin-top:2px;}
+.ch-start-btn{background:var(--teal);color:#0e0f14;border:none;border-radius:var(--r);padding:14px;width:100%;font-size:14px;font-weight:700;cursor:pointer;font-family:'Sora',sans-serif;letter-spacing:.5px;transition:opacity .2s;}
+.ch-start-btn:hover{opacity:.9;}
+
+/* ── GLOBAL MOCK ── */
+#mock-setup{background:var(--bg);}
+.gs-body{padding:20px;overflow-y:auto;flex:1;}
+.mode-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0;}
+.mode-card{background:var(--s1);border:1.5px solid var(--border);border-radius:var(--r2);padding:16px;cursor:pointer;text-align:center;transition:all .2s;}
+.mode-card:hover,.mode-card.sel{border-color:var(--teal);background:var(--s2);}
+.mode-card .mn{font-family:'Libre Baskerville',serif;font-size:30px;color:var(--teal);}
+.mode-card .ml{font-size:11px;color:var(--muted);margin-top:4px;font-family:'JetBrains Mono',monospace;}
+.info-banner{background:var(--s2);border:1px solid var(--border);border-radius:var(--r);padding:14px;margin-bottom:18px;}
+.ib-lbl{font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--muted);letter-spacing:1.5px;margin-bottom:8px;text-transform:uppercase;}
+.ib-body{font-size:13px;line-height:1.9;color:var(--text);}
+.ib-body strong{color:var(--teal);}
+.big-start{background:var(--teal);color:#0e0f14;border:none;border-radius:var(--r);padding:16px;width:100%;font-size:15px;font-weight:700;cursor:pointer;font-family:'Sora',sans-serif;margin-top:auto;transition:opacity .2s;}
+.big-start:hover{opacity:.9;}
+
+/* ── QUIZ ── */
+#quiz{background:var(--bg);}
+.qh{padding:14px 18px;border-bottom:1px solid var(--border);background:var(--s1);flex-shrink:0;}
+.qh-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.q-cnt{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);}
+.timer{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--teal);background:var(--s3);padding:4px 10px;border-radius:6px;border:1px solid var(--border);}
+.timer.hot{color:var(--red);animation:blink 1s infinite;border-color:var(--red);}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
+.qprog{height:3px;background:var(--s3);border-radius:2px;overflow:hidden;}
+.qprog-fill{height:100%;background:var(--teal);border-radius:2px;transition:width .3s;}
+.qbody{padding:18px;overflow-y:auto;flex:1;}
+.q-tag{display:inline-block;background:var(--s3);border:1px solid var(--border2);color:var(--muted);font-size:10px;font-family:'JetBrains Mono',monospace;padding:3px 10px;border-radius:20px;margin-bottom:14px;}
+.q-text{font-size:15px;line-height:1.7;margin-bottom:20px;color:var(--text);}
+.opts{list-style:none;}
+.ob{width:100%;text-align:left;background:var(--s1);border:1.5px solid var(--border);border-radius:var(--r);padding:13px 15px;margin-bottom:9px;cursor:pointer;font-size:13px;color:var(--text);font-family:'Sora',sans-serif;transition:all .2s;display:flex;align-items:flex-start;gap:12px;line-height:1.5;}
+.ob:hover:not(:disabled){border-color:var(--teal);background:var(--s2);}
+.ob.ok{border-color:var(--green);background:rgba(74,222,128,0.08);}
+.ob.ng{border-color:var(--red);background:rgba(255,95,95,0.08);}
+.ob.reveal{border-color:var(--green);background:rgba(74,222,128,0.06);}
+.ol{font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--s3);width:22px;height:22px;border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid var(--border2);}
+.ob.ok .ol{background:var(--green);color:#0e0f14;border-color:var(--green);}
+.ob.ng .ol{background:var(--red);color:#fff;border-color:var(--red);}
+.exp-box{background:var(--s2);border:1px solid var(--border);border-radius:var(--r);padding:14px;margin-top:14px;font-size:13px;line-height:1.7;color:var(--muted);display:none;}
+.exp-box.show{display:block;}
+.exp-box strong{color:var(--text);}
+.nxt{background:var(--s2);border:1px solid var(--border);color:var(--text);border-radius:var(--r);padding:12px;cursor:pointer;font-size:13px;font-weight:500;font-family:'Sora',sans-serif;margin-top:14px;width:100%;display:none;transition:all .2s;}
+.nxt.show{display:block;}
+.nxt:hover{border-color:var(--teal);color:var(--teal);}
+
+/* ── RESULTS ── */
+#results{background:var(--bg);align-items:center;justify-content:center;padding:28px;text-align:center;}
+.res-ring{width:150px;height:150px;position:relative;margin:0 auto 22px;}
+.res-ring svg{transform:rotate(-90deg);}
+.res-inner{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);}
+.res-num{font-family:'Libre Baskerville',serif;font-size:36px;color:var(--text);display:block;}
+.res-den{font-size:12px;color:var(--muted);font-family:'Sora',sans-serif;}
+.res-badge{font-family:'JetBrains Mono',monospace;font-size:12px;padding:5px 16px;border-radius:20px;display:inline-block;margin-bottom:12px;letter-spacing:1px;}
+.res-badge.pass{background:rgba(74,222,128,0.1);color:var(--green);border:1px solid var(--green);}
+.res-badge.fail{background:rgba(255,95,95,0.1);color:var(--red);border:1px solid var(--red);}
+.res-msg{font-size:14px;color:var(--muted);max-width:300px;margin:0 auto 24px;line-height:1.6;}
+.res-table{background:var(--s1);border:1px solid var(--border);border-radius:var(--r2);padding:16px;width:100%;max-width:360px;text-align:left;margin-bottom:20px;}
+.rt-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;}
+.rt-row:last-child{border-bottom:none;}
+.rt-val{font-family:'JetBrains Mono',monospace;font-weight:500;}
+.rt-val.g{color:var(--green);}
+.rt-val.r{color:var(--red);}
+.res-actions{display:flex;gap:10px;width:100%;max-width:360px;}
+.ra{flex:1;padding:13px;border-radius:var(--r);font-size:13px;font-weight:600;cursor:pointer;font-family:'Sora',sans-serif;transition:all .2s;}
+.ra.p{background:var(--teal);color:#0e0f14;border:none;}
+.ra.s{background:none;border:1px solid var(--border);color:var(--text);}
+.ra:hover{opacity:.85;}
+
+/* ── CHEAT SHEET ── */
+#cheatsheet{background:var(--bg);}
+.cs-body{padding:16px;overflow-y:auto;flex:1;}
+.css-section{margin-bottom:22px;}
+.css-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--teal);text-transform:uppercase;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border);}
+.css-item{background:var(--s1);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:8px;}
+.css-item h4{font-size:13px;font-weight:600;color:var(--text);margin-bottom:5px;}
+.css-item p{font-size:12px;color:var(--muted);line-height:1.6;}
+.css-item code{font-family:'JetBrains Mono',monospace;color:var(--violet);font-size:12px;}
+
+/* utility */
+.scroll-area{overflow-y:auto;flex:1;}
+</style>
+</head>
+<body>
+
+<!-- ══════════════ HOME ══════════════ -->
+<div id="home" class="screen active">
+  <div class="home-hero">
+    <div class="hero-glow"></div>
+    <div class="badge">ACCA · BT · COMPLETE</div>
+    <h1 class="hero-title">Business &amp;<br><em>Technology</em></h1>
+    <p class="hero-sub">Lectures · Notes · Formulas · Chapter Mocks · Full Exam Simulation</p>
+    <div class="progress-strip">
+      <div class="ps-row"><span>Progress</span><span id="h-pct">0%</span></div>
+      <div class="ps-bar"><div class="ps-fill" id="h-fill" style="width:0%"></div></div>
+    </div>
+    <p class="founder">Built &amp; designed by <span>Rowshan Mashrafi</span></p>
+  </div>
+
+  <div class="nav-section">
+    <h2>Study Tools</h2>
+    <div class="nav-cards">
+      <div class="nc wide" onclick="showScreen('mock-setup')">
+        <span class="ico">🎯</span>
+        <div><h3>Full Mock Exam</h3><p>60 questions · 72 min · All chapters</p></div>
+      </div>
+      <div class="nc" onclick="showScreen('chapters')">
+        <span class="ico">📖</span>
+        <h3>Chapter Study</h3>
+        <p>Lectures, notes &amp; chapter mocks</p>
+      </div>
+      <div class="nc" onclick="showScreen('cheatsheet')">
+        <span class="ico">⚡</span>
+        <h3>Cheat Sheet</h3>
+        <p>All frameworks at a glance</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-section" style="padding-top:0;">
+    <h2>Chapters</h2>
+    <div class="chapter-chips" id="home-chips"></div>
+  </div>
+</div>
+
+<!-- ══════════════ CHAPTERS LIST ══════════════ -->
+<div id="chapters" class="screen">
+  <div class="ph">
+    <button class="back" onclick="showScreen('home')">←</button>
+    <div><div class="ph-title">All Chapters</div><div class="ph-sub">9 syllabus areas · BT</div></div>
+  </div>
+  <div class="ch-list scroll-area" id="ch-list"></div>
+</div>
+
+<!-- ══════════════ CHAPTER DETAIL ══════════════ -->
+<div id="chapter-detail" class="screen">
+  <div class="ph">
+    <button class="back" onclick="showScreen('chapters')">←</button>
+    <div><div class="ph-title" id="cd-title">Chapter</div><div class="ph-sub" id="cd-sub"></div></div>
+  </div>
+  <div class="ch-tabs" id="cd-tabs">
+    <div class="ch-tab active" onclick="switchTab(0)">📘 Lecture</div>
+    <div class="ch-tab" onclick="switchTab(1)">📝 Notes</div>
+    <div class="ch-tab" onclick="switchTab(2)">📐 Formulas</div>
+    <div class="ch-tab" onclick="switchTab(3)">🎯 Mock</div>
+  </div>
+  <div id="cd-lecture" class="tab-pane active scroll-area"></div>
+  <div id="cd-notes"   class="tab-pane scroll-area"></div>
+  <div id="cd-formulas"class="tab-pane scroll-area"></div>
+  <div id="cd-mock"    class="tab-pane scroll-area"></div>
+</div>
+
+<!-- ══════════════ GLOBAL MOCK SETUP ══════════════ -->
+<div id="mock-setup" class="screen">
+  <div class="ph">
+    <button class="back" onclick="showScreen('home')">←</button>
+    <div><div class="ph-title">Mock Exam</div><div class="ph-sub">Full simulation</div></div>
+  </div>
+  <div class="gs-body">
+    <div class="info-banner">
+      <div class="ib-lbl">📋 BT Exam Format</div>
+      <div class="ib-body">60 MCQ questions &nbsp;·&nbsp; 72 minutes<br>Pass mark: <strong>50%</strong> (30/60)<br>Computer-based · Pearson VUE</div>
+    </div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Choose number of questions:</p>
+    <div class="mode-cards">
+      <div class="mode-card sel" onclick="selQ(10,this)"><div class="mn">10</div><div class="ml">Quick</div></div>
+      <div class="mode-card" onclick="selQ(20,this)"><div class="mn">20</div><div class="ml">Standard</div></div>
+      <div class="mode-card" onclick="selQ(40,this)"><div class="mn">40</div><div class="ml">Full Set</div></div>
+      <div class="mode-card" onclick="selQ(60,this)"><div class="mn">60</div><div class="ml">Exam Sim</div></div>
+    </div>
+    <button class="big-start" onclick="launchMock(null)">Start Mock Exam →</button>
+  </div>
+</div>
+
+<!-- ══════════════ QUIZ ══════════════ -->
+<div id="quiz" class="screen">
+  <div class="qh">
+    <div class="qh-row">
+      <span class="q-cnt" id="q-cnt">Q1/10</span>
+      <span class="timer" id="qtimer">1:12</span>
+    </div>
+    <div class="qprog"><div class="qprog-fill" id="qpf"></div></div>
+  </div>
+  <div class="qbody" id="qbody"></div>
+</div>
+
+<!-- ══════════════ RESULTS ══════════════ -->
+<div id="results" class="screen">
+  <div class="res-ring">
+    <svg width="150" height="150" viewBox="0 0 150 150">
+      <circle cx="75" cy="75" r="60" fill="none" stroke="#1c1d26" stroke-width="10"/>
+      <circle cx="75" cy="75" r="60" fill="none" stroke="#00d4b4" stroke-width="10"
+        stroke-dasharray="376.99" id="res-arc" stroke-dashoffset="376.99" stroke-linecap="round"
+        style="transition:stroke-dashoffset 1.2s ease"/>
+    </svg>
+    <div class="res-inner">
+      <span class="res-num" id="rn">0</span>
+      <span class="res-den">/ <span id="rd">10</span></span>
+    </div>
+  </div>
+  <div class="res-badge" id="rbadge">PASS</div>
+  <p class="res-msg" id="rmsg"></p>
+  <div class="res-table">
+    <div class="rt-row"><span>Correct</span><span class="rt-val g" id="rc">0</span></div>
+    <div class="rt-row"><span>Incorrect</span><span class="rt-val r" id="rw">0</span></div>
+    <div class="rt-row"><span>Score</span><span class="rt-val" id="rp">0%</span></div>
+    <div class="rt-row"><span>Pass mark</span><span class="rt-val">50%</span></div>
+  </div>
+  <div class="res-actions">
+    <button class="ra p" id="r-retry">Retry</button>
+    <button class="ra s" onclick="showScreen('home')">Home</button>
+  </div>
+</div>
+
+<!-- ══════════════ CHEAT SHEET ══════════════ -->
+<div id="cheatsheet" class="screen">
+  <div class="ph">
+    <button class="back" onclick="showScreen('home')">←</button>
+    <div><div class="ph-title">Cheat Sheet</div><div class="ph-sub">All key frameworks</div></div>
+  </div>
+  <div class="cs-body" id="cs-body"></div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// CHAPTER DATA
+// ═══════════════════════════════════════════════════════════════
+const CHAPTERS = [
+{
+  id:1, name:"Business Organisations & Stakeholders", code:"A",
+  desc:"Types of organisations, objectives, and stakeholder management.",
+  lecture:{
+    intro:"Every organisation exists for a purpose. Understanding the type of organisation tells us what it is trying to achieve and who it must answer to. This chapter forms the foundation of your BT studies.",
+    blocks:[
+      {h:"Types of Business Organisation", body:"Organisations exist in three broad sectors:<ul><li><strong>Private sector</strong> – owned by individuals, aim to make profit. Includes sole traders, partnerships, and limited companies.</li><li><strong>Public sector</strong> – owned/controlled by government. Aim to provide public services (e.g. healthcare, education). Funded by taxation.</li><li><strong>Not-for-profit / Third sector</strong> – charities, NGOs, cooperatives. Aim to fulfil a social mission. Any surplus is reinvested.</li></ul>"},
+      {h:"Sole Traders & Partnerships", body:"A <strong>sole trader</strong> is the simplest form — one person owns and runs the business. <strong>Unlimited liability</strong> means their personal assets can be seized to pay business debts. A <strong>partnership</strong> shares ownership between two or more people. All general partners have unlimited liability unless it is a <strong>Limited Liability Partnership (LLP)</strong>.", example:"Reza runs a small grocery shop alone. He is a sole trader. If the shop owes $10,000 in debt, Reza's personal savings can be used to pay it."},
+      {h:"Limited Companies", body:"A limited company is a <strong>separate legal entity</strong> — it exists independently of its owners. Shareholders' liability is <strong>limited to their investment</strong>. A <strong>private limited company (Ltd)</strong> cannot offer shares to the public. A <strong>public limited company (PLC)</strong> can list on a stock exchange and sell shares publicly.", example:"ACCA itself is a company limited by guarantee. A shareholders' personal car cannot be seized if the company owes money."},
+      {h:"Stakeholders & Mendelow's Matrix", body:"A <strong>stakeholder</strong> is any person or group who is affected by or can affect the organisation. Types:<ul><li><strong>Internal:</strong> employees, managers, directors</li><li><strong>Connected:</strong> shareholders, customers, suppliers, lenders</li><li><strong>External:</strong> government, community, pressure groups</li></ul><strong>Mendelow's Matrix</strong> maps stakeholders by <em>Power</em> (ability to influence) vs <em>Interest</em> (degree of concern). This determines engagement strategy."}
+    ]
+  },
+  notes:[
+    {icon:"🏢",type:"teal",title:"Key Distinction: Liability",body:"<strong>Unlimited liability</strong> (sole trader, partnership) = personal assets at risk. <strong>Limited liability</strong> (Ltd, PLC) = loss limited to investment. This is the most tested concept in this chapter."},
+    {icon:"👥",type:"blue",title:"Stakeholder vs Shareholder",body:"<strong>Shareholder</strong> = owner of shares in a company (a subset of stakeholder). <strong>Stakeholder</strong> = ANYONE affected by the organisation. All shareholders are stakeholders but not all stakeholders are shareholders."},
+    {icon:"⚡",type:"amber",title:"Primary Objectives by Sector",body:"Private sector → <strong>Maximise shareholder wealth</strong> (profit). Public sector → <strong>Value for money / service delivery</strong>. Not-for-profit → <strong>Fulfil social mission</strong>, reinvest surplus."}
+  ],
+  formulas:[
+    {title:"MENDELOW'S MATRIX",f:"High Power + High Interest  → MANAGE CLOSELY\nHigh Power + Low Interest   → KEEP SATISFIED\nLow Power  + High Interest  → KEEP INFORMED\nLow Power  + Low Interest   → MONITOR ONLY",note:"Manage closely = key players (e.g. major shareholders). Keep satisfied = sleeping giants. Keep informed = activists. Monitor = minimal effort."},
+    {title:"STAKEHOLDER CATEGORIES",f:"Internal:   Employees, Managers, Directors\nConnected:  Shareholders, Customers, Suppliers\nExternal:   Government, Community, Media",note:"The exam may ask you to classify stakeholders. Know all three categories."}
+  ],
+  tips:["Mendelow's Matrix is tested almost every exam — know all four quadrants and their strategies cold.","Remember: a company limited by shares vs limited by guarantee — charities often use the latter.","The ACCA exam loves scenario questions: 'A local council is worried about a factory opening nearby — where do they sit on Mendelow's Matrix?' → Low power, High interest → Keep Informed."]
+},
+{
+  id:2, name:"The Business Environment", code:"B",
+  desc:"PESTEL, Porter's Five Forces, competitive strategy, and strategic analysis.",
+  lecture:{
+    intro:"No business operates in a vacuum. The external environment constantly shapes opportunities and threats. This chapter covers the key frameworks used to analyse the environment systematically.",
+    blocks:[
+      {h:"PESTEL Analysis", body:"PESTEL analyses the <strong>macro-environment</strong> — factors outside the organisation's control:<ul><li><strong>Political:</strong> government policy, trade agreements, political stability</li><li><strong>Economic:</strong> interest rates, inflation, GDP, unemployment</li><li><strong>Social:</strong> demographics, culture, lifestyle trends, education levels</li><li><strong>Technological:</strong> automation, R&D, digital disruption, innovation</li><li><strong>Environmental:</strong> climate change, sustainability, carbon targets</li><li><strong>Legal:</strong> employment law, health &amp; safety, consumer protection</li></ul>", example:"A bakery planning to expand: rising flour prices (Economic), new food labelling laws (Legal), health-conscious consumers (Social), new delivery apps (Technological)."},
+      {h:"Porter's Five Forces", body:"Analyses the <strong>competitive environment</strong> of an industry:<ul><li><strong>Competitive rivalry:</strong> intensity of competition between existing firms</li><li><strong>Threat of new entrants:</strong> ease with which new competitors can enter (barriers to entry)</li><li><strong>Threat of substitutes:</strong> alternative products that fulfil the same need</li><li><strong>Buyer power:</strong> ability of customers to drive prices down</li><li><strong>Supplier power:</strong> ability of suppliers to raise prices</li></ul>Strong forces = less attractive industry. Weak forces = more profitable industry."},
+      {h:"Porter's Generic Strategies", body:"Once you understand the environment, a business chooses how to compete:<ul><li><strong>Cost leadership:</strong> lowest cost producer in the industry → compete on price</li><li><strong>Differentiation:</strong> unique product/service → charge premium price</li><li><strong>Focus:</strong> serve a narrow market segment, either by cost or differentiation</li></ul>A business 'stuck in the middle' with no clear strategy tends to underperform."},
+      {h:"SWOT & Ansoff Matrix", body:"<strong>SWOT</strong> bridges internal and external analysis: Strengths and Weaknesses (internal) vs Opportunities and Threats (external). <strong>Ansoff's Matrix</strong> helps plan growth strategy by combining existing/new products with existing/new markets. Diversification (new product + new market) carries the highest risk."}
+    ]
+  },
+  notes:[
+    {icon:"🔍",type:"teal",title:"PESTEL vs Five Forces",body:"PESTEL = <strong>macro</strong> environment (big picture, whole economy). Five Forces = <strong>micro/industry</strong> environment (your specific competitive space). The exam may ask which framework applies to a given scenario."},
+    {icon:"📊",type:"blue",title:"Ansoff Matrix Risk Levels",body:"Market Penetration (lowest risk) → Product Development → Market Development → Diversification (highest risk). Risk increases as you move into unfamiliar territory."},
+    {icon:"⚡",type:"amber",title:"BCG Matrix for Products",body:"Stars (high growth/high share → invest), Cash Cows (low growth/high share → milk), Question Marks (high growth/low share → decide), Dogs (low growth/low share → divest or harvest)."}
+  ],
+  formulas:[
+    {title:"ANSOFF'S MATRIX",f:"Existing Product + Existing Market = Market Penetration\nNew Product    + Existing Market = Product Development\nExisting Product + New Market   = Market Development\nNew Product    + New Market     = Diversification",note:"Diversification = highest risk. Market penetration = lowest risk."},
+    {title:"PORTER'S FIVE FORCES",f:"1. Competitive Rivalry\n2. Threat of New Entrants\n3. Threat of Substitutes\n4. Buyer (Customer) Power\n5. Supplier Power",note:"High forces = low industry attractiveness. Low forces = high profitability potential."}
+  ],
+  tips:["PESTEL and Five Forces appear together in scenario questions. Identify which factor belongs to which framework.","'Stuck in the middle' is a key Porter concept — no clear strategy leads to poor performance.","The exam frequently asks you to place a scenario on the Ansoff Matrix. Focus on whether the product AND market are new or existing."]
+},
+{
+  id:3, name:"Organisational Structure & Culture", code:"C",
+  desc:"Organisational structures, centralisation vs decentralisation, and Handy's culture types.",
+  lecture:{
+    intro:"How an organisation is structured determines how decisions are made, how fast it can respond, and how people work together. Culture — the 'way we do things here' — shapes behaviour just as powerfully as formal structure.",
+    blocks:[
+      {h:"Types of Organisational Structure", body:"<ul><li><strong>Functional:</strong> Departments by specialist function (HR, Finance, Marketing). Clear career paths but can create departmental silos.</li><li><strong>Divisional:</strong> Split by product, geography, or customer. Each division is semi-autonomous. More responsive but duplicates functions.</li><li><strong>Matrix:</strong> Combines function and project. Employees report to both a functional manager and a project manager. Flexible but creates dual authority and role conflict.</li><li><strong>Entrepreneurial/Simple:</strong> Common in small businesses. Centralised around the founder/owner. Fast decisions but depends on one person.</li></ul>"},
+      {h:"Centralisation vs Decentralisation", body:"<strong>Centralisation:</strong> Decision-making concentrated at the top. Benefits: consistency, control, unified direction. Drawbacks: slow, demotivates lower staff, overloads senior managers.<br><br><strong>Decentralisation:</strong> Authority delegated downwards. Benefits: faster decisions, motivates staff, develops managers. Drawbacks: potential inconsistency, requires trained staff."},
+      {h:"Span of Control & Hierarchy", body:"<strong>Span of control</strong> = number of subordinates directly managed. Wide span = flat structure (few levels, many reports). Narrow span = tall structure (many levels, few reports).<br><br>Modern organisations tend to <strong>delayer</strong> (remove management levels) to reduce costs and speed up communication.", example:"A flat structure has 3 levels and each manager supervises 10 people. A tall structure has 7 levels and each manager supervises 4."},
+      {h:"Handy's Cultural Types", body:"Charles Handy identified four organisation cultures:<ul><li><strong>Power culture (Spider's web):</strong> Power radiates from a central figure. Fast decisions, personal control. Common in small firms.</li><li><strong>Role culture (Greek temple):</strong> Power comes from position and rules. Stable, bureaucratic. Common in banks, civil service.</li><li><strong>Task culture (Net):</strong> Power based on expertise. Team-oriented, flexible. Common in consultancies, project teams.</li><li><strong>Person culture (Cluster):</strong> Individual is central. Organisation exists to serve the individual. Common in partnerships of professionals (lawyers, architects).</li></ul>"}
+    ]
+  },
+  notes:[
+    {icon:"🕸️",type:"teal",title:"Handy's Four Cultures — Memory Aid",body:"<strong>Web</strong> = Power (one spider at centre). <strong>Temple</strong> = Role (pillars/rules support it). <strong>Net</strong> = Task (flexible connections). <strong>Cluster</strong> = Person (individuals matter most)."},
+    {icon:"📐",type:"blue",title:"Matrix Structure: Advantages & Disadvantages",body:"<strong>Advantages:</strong> flexible use of resources, good communication, suited to complex projects. <strong>Disadvantages:</strong> dual authority creates confusion, potential conflict between managers, role ambiguity."},
+    {icon:"⚡",type:"amber",title:"Span of Control Factors",body:"Wider spans are possible when: tasks are simple/routine, staff are well-trained, good communication systems exist, work is geographically concentrated."}
+  ],
+  formulas:[
+    {title:"HANDY'S CULTURAL TYPES",f:"Power Culture   → Spider's Web  (centralised control)\nRole Culture    → Greek Temple  (rules & procedures)\nTask Culture    → Net           (team & expertise)\nPerson Culture  → Cluster/Galaxy (individual-focused)",note:"Know the metaphor for each. The exam describes a scenario and asks which culture it represents."},
+    {title:"STRUCTURE COMPARISON",f:"Functional  → Specialist depts, silos, clear careers\nDivisional  → Autonomous units, duplication of roles\nMatrix      → Dual authority, flexible, project focus\nSimple      → Owner-centred, fast, high dependency",note:""}
+  ],
+  tips:["Handy's cultures are tested by scenario — read carefully for clues: 'The CEO makes all decisions' = Power culture. 'Everything is done by the rule book' = Role culture.","Matrix structure questions often ask about its DISADVANTAGES — dual authority and role conflict are the key ones.","Tall vs flat structure: tall = more control/less span; flat = more span/less control."]
+},
+{
+  id:4, name:"Governance, Ethics & CSR", code:"D",
+  desc:"Corporate governance, ACCA ethics, CSR, and Carroll's pyramid.",
+  lecture:{
+    intro:"Ethics is at the heart of the ACCA qualification. This chapter covers how organisations govern themselves, the ethical responsibilities of accountants, and how businesses engage with society through Corporate Social Responsibility.",
+    blocks:[
+      {h:"Corporate Governance", body:"<strong>Corporate governance</strong> is the system by which companies are directed and controlled (Cadbury Report, 1992). It exists because of the <strong>agency problem</strong>: shareholders (principals) delegate management to directors (agents), who may act in their own interests rather than shareholders'.<br><br>Key governance mechanisms: board of directors, audit committees, non-executive directors (NEDs), external audit, and shareholder voting."},
+      {h:"OECD Principles of Corporate Governance", body:"The OECD identifies five pillars:<ul><li><strong>Accountability</strong> – management accountable to shareholders</li><li><strong>Transparency</strong> – open and honest disclosure</li><li><strong>Fairness</strong> – equal treatment of all shareholders</li><li><strong>Responsibility</strong> – recognise rights of all stakeholders</li><li><strong>Independence</strong> – independent oversight (e.g. NEDs)</li></ul>"},
+      {h:"ACCA's Five Fundamental Ethical Principles", body:"All ACCA members and students must uphold:<ul><li><strong>Integrity</strong> – straightforward and honest</li><li><strong>Objectivity</strong> – free from bias and conflicts of interest</li><li><strong>Professional Competence &amp; Due Care</strong> – maintain skills, act diligently</li><li><strong>Confidentiality</strong> – do not disclose client information without authority</li><li><strong>Professional Behaviour</strong> – comply with laws, avoid actions that discredit ACCA</li></ul>"},
+      {h:"Carroll's CSR Pyramid", body:"Carroll (1991) argued businesses have four responsibilities, stacked as a pyramid:<ul><li><strong>Economic (base):</strong> Be profitable — the foundation of all else</li><li><strong>Legal:</strong> Obey the law — play by the rules of the game</li><li><strong>Ethical:</strong> Be ethical — do what is right, even if not required by law</li><li><strong>Philanthropic (top):</strong> Be a good citizen — give back to society</li></ul>All four levels must be met, starting from the base.", example:"A factory that makes a profit (Economic), pays its taxes (Legal), treats workers fairly (Ethical), and funds a local school (Philanthropic) is fully socially responsible."}
+    ]
+  },
+  notes:[
+    {icon:"⚖️",type:"teal",title:"ACCA 5 Principles — IOPCP",body:"<strong>I</strong>ntegrity · <strong>O</strong>bjectivity · <strong>P</strong>rofessional Competence · <strong>C</strong>onfidentiality · <strong>P</strong>rofessional Behaviour. The exam will present a scenario and ask which principle is at risk."},
+    {icon:"🏛️",type:"blue",title:"Role of Non-Executive Directors (NEDs)",body:"NEDs are independent members of the board — they do NOT manage the company day-to-day. They provide independent scrutiny, challenge management, and sit on audit/remuneration committees. Key for good governance."},
+    {icon:"📢",type:"amber",title:"Whistleblowing",body:"Reporting suspected wrongdoing within or about an organisation. ACCA members should consider this if confidentiality conflicts with the public interest. Protected by law in many jurisdictions."}
+  ],
+  formulas:[
+    {title:"CARROLL'S CSR PYRAMID",f:"(Top)    Philanthropic  — Be a good corporate citizen\n         Ethical        — Be ethical beyond legal requirements\n         Legal          — Obey the law\n(Base)   Economic       — Be profitable",note:"Economic is the FOUNDATION — without profit, nothing else is sustainable. Philanthropic is the TOP but NOT the most important."},
+    {title:"ACCA FUNDAMENTAL PRINCIPLES",f:"1. Integrity\n2. Objectivity\n3. Professional Competence & Due Care\n4. Confidentiality\n5. Professional Behaviour",note:"Memorise all five. Know the definition of each."}
+  ],
+  tips:["Carroll's pyramid is often misread — Economic is the FOUNDATION (not least important). The exam has asked about this directly.","ACCA ethics scenarios: always identify WHICH principle is threatened, then explain why.","Agency problem = directors (agents) acting in self-interest vs shareholders (principals). This motivates governance structures."]
+},
+{
+  id:5, name:"Human Resource Management", code:"E",
+  desc:"Motivation theories, recruitment, training, appraisal, and HR practices.",
+  lecture:{
+    intro:"People are an organisation's most valuable asset. HRM covers how organisations attract, develop, motivate, and retain their workforce. Motivation theory is the most heavily tested area of this chapter.",
+    blocks:[
+      {h:"Maslow's Hierarchy of Needs", body:"Maslow (1943) proposed that human needs form a hierarchy — lower needs must be met before higher ones motivate behaviour:<ol style='padding-left:16px;'><li><strong>Physiological:</strong> food, water, shelter (pay, warmth)</li><li><strong>Safety:</strong> security, stability (job security, safe workplace)</li><li><strong>Social:</strong> belonging, relationships (team, friendships)</li><li><strong>Esteem:</strong> recognition, status (promotion, praise)</li><li><strong>Self-actualisation:</strong> fulfilment, reaching potential (challenging work, creativity)</li></ol>", example:"A new employee first needs a fair wage (physiological) and job security (safety) before being motivated by recognition or interesting work."},
+      {h:"Herzberg's Two-Factor Theory", body:"Herzberg found two distinct sets of workplace factors:<ul><li><strong>Hygiene factors</strong> (extrinsic): salary, working conditions, job security, company policy. Their ABSENCE causes dissatisfaction but their PRESENCE does NOT motivate.</li><li><strong>Motivators</strong> (intrinsic): achievement, recognition, responsibility, advancement, interesting work. These actively create job satisfaction and motivation.</li></ul>The key insight: <em>improving hygiene factors won't motivate — you must also address motivators.</em>"},
+      {h:"McGregor's Theory X and Theory Y", body:"McGregor proposed two contrasting assumptions managers hold about workers:<ul><li><strong>Theory X:</strong> Workers are lazy, dislike work, need close supervision and control, motivated only by money. Management style: authoritarian.</li><li><strong>Theory Y:</strong> Workers are self-motivated, enjoy work, seek responsibility, can be creative. Management style: participative, empowering.</li></ul>Theory Y assumptions tend to lead to higher motivation and better outcomes."},
+      {h:"Vroom's Expectancy Theory", body:"Vroom proposed motivation is based on three beliefs:<ul><li><strong>Expectancy:</strong> Can I actually do this task? (Effort → Performance)</li><li><strong>Instrumentality:</strong> If I do it well, will I be rewarded? (Performance → Outcome)</li><li><strong>Valence:</strong> Do I value the reward on offer? (Value of Outcome)</li></ul>All three must be high for motivation to occur. If any element is zero, overall motivation = zero."},
+      {h:"Recruitment & Selection Process", body:"<ul><li>Job analysis → Job description (tasks) → Person specification (skills/qualities)</li><li>Advertise → Screen applications → Interview → Test → Reference check → Offer</li></ul><strong>Induction:</strong> Introducing a new employee to the organisation, colleagues, systems, and culture. Reduces early turnover."}
+    ]
+  },
+  notes:[
+    {icon:"💡",type:"teal",title:"Herzberg Trap — Hygiene ≠ Motivation",body:"Salary is a HYGIENE factor — paying well prevents dissatisfaction but does NOT motivate. This is counterintuitive and often tested. True motivators are achievement, recognition, and interesting work."},
+    {icon:"📋",type:"blue",title:"Job Description vs Person Specification",body:"<strong>Job description</strong> = what the JOB involves (duties, responsibilities, reporting line). <strong>Person specification</strong> = what the PERSON needs (qualifications, skills, experience, personality)."},
+    {icon:"⚡",type:"amber",title:"360-Degree Appraisal",body:"Feedback gathered from all directions: supervisor, peers, subordinates, and self. More comprehensive than traditional top-down appraisal but time-consuming and can be politically sensitive."}
+  ],
+  formulas:[
+    {title:"VROOM'S EXPECTANCY THEORY",f:"Motivation = Expectancy × Instrumentality × Valence\n\nExpectancy:      Can I do the task? (Effort → Performance)\nInstrumentality: Will I be rewarded? (Performance → Outcome)\nValence:         Do I value the reward?",note:"Multiplicative — if ANY factor = 0, total motivation = 0. All three must be positive."},
+    {title:"MASLOW'S HIERARCHY (bottom to top)",f:"1. Physiological  — Pay, food, shelter\n2. Safety         — Job security, safe conditions\n3. Social         — Belonging, teamwork\n4. Esteem         — Recognition, status\n5. Self-Actualisation — Fulfilment, potential",note:"Lower needs must be satisfied before higher needs become motivators."}
+  ],
+  tips:["Herzberg: salary is a HYGIENE factor, NOT a motivator. This trips up most students.","Vroom: if any of the three factors is zero, motivation = zero. Use this in scenario answers.","Theory X managers use close supervision and control. Theory Y managers delegate and empower. The exam may ask which theory a manager's behaviour reflects."]
+},
+{
+  id:6, name:"Leadership & Management", code:"F",
+  desc:"Management functions, leadership styles, Fayol, and Adair's action-centred leadership.",
+  lecture:{
+    intro:"Management and leadership are related but distinct concepts. Understanding the difference, the functions of management, and the range of leadership styles is essential for this chapter.",
+    blocks:[
+      {h:"Management vs Leadership", body:"<strong>Management</strong> (Drucker): 'Doing things right' — efficiency, planning, organising, controlling existing processes.<br><strong>Leadership</strong>: 'Doing the right things' — effectiveness, setting direction, inspiring people, driving change.<br><br>A good manager is not necessarily a good leader and vice versa. Modern organisations need both."},
+      {h:"Fayol's Five Functions of Management", body:"Henri Fayol identified five core management functions:<ol style='padding-left:16px;'><li><strong>Planning:</strong> Setting objectives and deciding how to achieve them</li><li><strong>Organising:</strong> Allocating resources and tasks</li><li><strong>Commanding:</strong> Directing people to carry out tasks</li><li><strong>Co-ordinating:</strong> Ensuring all activities work together</li><li><strong>Controlling:</strong> Monitoring performance against plans</li></ol>"},
+      {h:"Leadership Styles", body:"<ul><li><strong>Autocratic:</strong> Leader makes all decisions alone. Fast but low morale, no team input. Best in crisis situations.</li><li><strong>Democratic/Participative:</strong> Team involved in decisions. Higher morale and buy-in but slower. Best for complex problems with experienced teams.</li><li><strong>Laissez-faire:</strong> Full delegation — leader steps back. Good for highly skilled/professional teams. Risky with inexperienced workers.</li><li><strong>Transactional:</strong> Leader motivates through reward/punishment. Clear exchange: perform → get reward.</li><li><strong>Transformational:</strong> Leader inspires through vision, charisma, and values. Creates followers who go beyond expectations.</li></ul>"},
+      {h:"Adair's Action-Centred Leadership", body:"John Adair argued good leadership must balance THREE overlapping needs — represented as three interlocking circles:<ul><li><strong>Task:</strong> Getting the job done — define objectives, plan, allocate work</li><li><strong>Team:</strong> Building and maintaining the group — communicate, motivate, develop</li><li><strong>Individual:</strong> Meeting individual needs — recognise contribution, develop skills</li></ul>A leader who focuses only on the task neglects people. Focusing only on individuals neglects the team and task."}
+    ]
+  },
+  notes:[
+    {icon:"🎯",type:"teal",title:"Adair's Three Circles",body:"Task + Team + Individual must ALL be balanced. Neglecting any one circle weakens leadership effectiveness. The exam presents a scenario and asks which circle is being neglected."},
+    {icon:"🔄",type:"blue",title:"Transactional vs Transformational",body:"<strong>Transactional:</strong> rewards compliance (carrot/stick). <strong>Transformational:</strong> inspires followers beyond self-interest through vision. Transformational leaders change organisations; transactional maintain them."},
+    {icon:"⚡",type:"amber",title:"Goleman's Emotional Intelligence",body:"Self-awareness · Self-regulation · Motivation · Empathy · Social skills. Goleman argued EI is more important than IQ for leadership success. The exam may ask you to identify which EI component a manager is demonstrating."}
+  ],
+  formulas:[
+    {title:"FAYOL'S 5 MANAGEMENT FUNCTIONS",f:"1. Planning      — Set objectives, decide how\n2. Organising    — Allocate resources & tasks\n3. Commanding    — Direct people\n4. Co-ordinating — Ensure harmony & alignment\n5. Controlling   — Monitor vs plan, take action",note:"These are functions of MANAGEMENT, not leadership. Know all five and be able to give examples."},
+    {title:"LEADERSHIP STYLE SUMMARY",f:"Autocratic     → Leader decides alone, tells people\nDemocratic     → Consults team, involves in decisions\nLaissez-faire  → Full delegation, minimal direction\nTransactional  → Reward/punishment exchange\nTransformational → Vision, inspire, charisma",note:""}
+  ],
+  tips:["Management = efficiency (doing things right). Leadership = effectiveness (doing the right things). Drucker's distinction.","Adair's circles: if a manager is ignoring individual development, that is the 'Individual' circle being neglected.","Transformational leadership is associated with change management and innovation. Transactional = maintaining the status quo."]
+},
+{
+  id:7, name:"Accounting & Finance Function", code:"G",
+  desc:"Role of finance, financial vs management accounting, internal audit, and internal controls.",
+  lecture:{
+    intro:"The accounting and finance function is the backbone of any organisation's information system. Understanding what it does, who it serves, and how it controls risk is essential for BT.",
+    blocks:[
+      {h:"Financial vs Management Accounting", body:"<ul><li><strong>Financial accounting:</strong> Produces statutory financial reports (income statement, balance sheet) for <em>external</em> users (shareholders, HMRC, banks). Governed by accounting standards (IFRS/UK GAAP). Historical and regulated.</li><li><strong>Management accounting:</strong> Provides information for <em>internal</em> decision-making (budgets, forecasts, variance analysis). No fixed format. Forward-looking and flexible.</li></ul>"},
+      {h:"The Treasury Function", body:"The treasury function manages the organisation's financial resources:<ul><li>Cash management and liquidity</li><li>Raising finance (loans, equity)</li><li>Managing foreign currency risk</li><li>Investment of surplus funds</li><li>Managing interest rate and commodity price risk</li></ul>"},
+      {h:"Internal vs External Audit", body:"<strong>Internal audit:</strong> An independent appraisal function within the organisation. Reviews systems, processes, and controls. Reports to the <em>audit committee</em> (not management). Objective: ensure controls are working and risks are managed.<br><br><strong>External audit:</strong> Independent auditors (e.g. KPMG) appointed by shareholders. Gives an opinion on whether financial statements show a 'true and fair view'. Reports to <em>shareholders</em>."},
+      {h:"Internal Controls", body:"Internal controls are the policies and procedures designed to prevent errors and fraud:<ul><li><strong>Segregation of duties:</strong> No one person controls a whole transaction (e.g. separate people for ordering, receiving, and paying)</li><li><strong>Authorisation:</strong> Transactions approved by a responsible person</li><li><strong>Physical controls:</strong> Locks, safes, restricted access</li><li><strong>Reconciliation:</strong> Regular checking of records against independent sources</li><li><strong>Supervision:</strong> Oversight of staff activities</li></ul>"}
+    ]
+  },
+  notes:[
+    {icon:"📊",type:"teal",title:"Financial vs Management Accounting",body:"<strong>Financial:</strong> External users, regulated, historical, mandatory. <strong>Management:</strong> Internal users, unregulated, forward-looking, optional. The exam tests this distinction with scenario questions."},
+    {icon:"🔍",type:"blue",title:"Internal Audit Independence",body:"Internal audit must be <strong>independent of management</strong> to be effective. It reports to the AUDIT COMMITTEE (part of the board), NOT to the finance director or CEO. This protects its objectivity."},
+    {icon:"⚡",type:"amber",title:"Segregation of Duties",body:"The most important control principle. If one person both orders AND pays for goods, fraud is easy. Splitting these responsibilities ('segregating duties') prevents any single person from committing and concealing fraud."}
+  ],
+  formulas:[
+    {title:"FINANCIAL vs MANAGEMENT ACCOUNTING",f:"Financial Accounting:\n  → External users (shareholders, HMRC)\n  → Governed by standards (IFRS)\n  → Historical, annual\n  → Mandatory\n\nManagement Accounting:\n  → Internal users (managers)\n  → No fixed rules/standards\n  → Forward-looking, continuous\n  → Optional (but essential in practice)",note:""},
+    {title:"TYPES OF INTERNAL CONTROL",f:"Preventive  → Stop errors/fraud occurring (auth, seg of duties)\nDetective   → Identify errors after they occur (reconciliation, audit)\nCorrective  → Fix problems once found (adjustments, retraining)",note:"Most important: segregation of duties (prevents fraud by no single-person control)."}
+  ],
+  tips:["Internal audit reports to the AUDIT COMMITTEE, not management — this is a frequent exam trap.","Segregation of duties is the key fraud prevention control. Know examples: separate ordering, receiving, and payment.","Financial accounting = for external users. Management accounting = for internal managers. Simple but frequently tested."]
+},
+{
+  id:8, name:"Technology & Data in Business", code:"H",
+  desc:"Information systems, big data, AI, cloud computing, cybersecurity, and GDPR.",
+  lecture:{
+    intro:"Technology is transforming business at every level. BT requires you to understand information systems, digital tools, data concepts, and cyber risks — all of which are increasingly tested in the modern exam.",
+    blocks:[
+      {h:"Qualities of Good Information — ACCURATE", body:"For information to be useful for decision-making it must be:<ul><li><strong>A</strong>ccurate — free from errors</li><li><strong>C</strong>omplete — all relevant details included</li><li><strong>C</strong>ost-beneficial — worth the cost to produce</li><li><strong>U</strong>nderstandable — clear to the user</li><li><strong>R</strong>elevant — relates to the decision at hand</li><li><strong>A</strong>ccessible — available when and where needed</li><li><strong>T</strong>imely — available when the decision must be made</li><li><strong>E</strong>asy to use — not overly complex</li></ul>"},
+      {h:"Types of Information Systems", body:"<ul><li><strong>TPS (Transaction Processing System):</strong> Records daily routine transactions. Operational level. E.g. point-of-sale system.</li><li><strong>MIS (Management Information System):</strong> Processes TPS data into structured reports for middle managers. E.g. sales reports by region.</li><li><strong>DSS (Decision Support System):</strong> Helps managers with semi-structured decisions using models and analysis. E.g. 'what-if' forecasting tools.</li><li><strong>EIS (Executive Information System):</strong> High-level summary for senior executives. Strategic level, drill-down capability. E.g. KPI dashboards.</li></ul>"},
+      {h:"Big Data, AI & Cloud Computing", body:"<strong>Big Data</strong> is characterised by the <em>3Vs</em>: Volume (huge scale), Velocity (generated rapidly), Variety (many formats — structured, unstructured).<br><br><strong>Artificial Intelligence (AI)</strong>: Systems that perform tasks requiring human-like intelligence — machine learning, natural language processing, robotics.<br><br><strong>Cloud computing</strong> delivers IT services over the internet: SaaS (software as a service), PaaS (platform), IaaS (infrastructure)."},
+      {h:"Cybersecurity & GDPR", body:"Key threats:<ul><li><strong>Phishing:</strong> Fraudulent emails to steal credentials</li><li><strong>Malware/Ransomware:</strong> Malicious software that encrypts data</li><li><strong>Social engineering:</strong> Manipulating people to reveal information</li></ul><strong>GDPR key principles:</strong> Lawful basis, purpose limitation, data minimisation, accuracy, storage limitation, integrity/security, accountability."}
+    ]
+  },
+  notes:[
+    {icon:"📡",type:"teal",title:"ACCURATE Mnemonic",body:"<strong>A</strong>ccurate <strong>C</strong>omplete <strong>C</strong>ost-beneficial <strong>U</strong>nderstandable <strong>R</strong>elevant <strong>A</strong>ccessible <strong>T</strong>imely <strong>E</strong>asy to use. This is directly tested — memorise all 8 qualities."},
+    {icon:"🖥️",type:"blue",title:"IS Hierarchy",body:"TPS (operational) → MIS (tactical/middle mgmt) → DSS (analytical) → EIS (strategic/executive). Lower systems feed data upwards. EIS users are the most senior."},
+    {icon:"☁️",type:"amber",title:"Cloud Models",body:"<strong>SaaS</strong> = software delivered online (e.g. Microsoft 365). <strong>PaaS</strong> = platform for developers to build apps. <strong>IaaS</strong> = rent virtual hardware/servers. The exam may ask which model applies to a given scenario."}
+  ],
+  formulas:[
+    {title:"GOOD INFORMATION — ACCURATE",f:"A - Accurate         (free from errors)\nC - Complete         (all relevant data)\nC - Cost-beneficial  (value > cost)\nU - Understandable   (clear presentation)\nR - Relevant         (fits the decision)\nA - Accessible       (available to users)\nT - Timely           (available when needed)\nE - Easy to use      (not overly complex)",note:"Direct exam target — know all 8."},
+    {title:"BIG DATA — THE 3Vs",f:"Volume   → Enormous quantity of data\nVelocity → Generated and processed rapidly\nVariety  → Structured, unstructured, many formats",note:"A 4th V — Veracity (accuracy/trustworthiness) — is sometimes added."}
+  ],
+  tips:["ACCURATE is a direct exam question — know all 8 qualities and what each means.","TPS = operational level (shop floor). EIS = strategic level (board). Know which system serves which level.","GDPR: data must be collected for a specific purpose and not used for other purposes (purpose limitation)."]
+},
+{
+  id:9, name:"Personal Effectiveness & Communication", code:"I",
+  desc:"Time management, communication, conflict resolution, and professional development.",
+  lecture:{
+    intro:"Professional effectiveness is not just about technical skills — it includes how you manage your time, communicate with others, resolve conflict, and continue to develop throughout your career.",
+    blocks:[
+      {h:"Time Management — Eisenhower Matrix", body:"Not all tasks are equally important or urgent. Stephen Covey popularised the <strong>Eisenhower Matrix</strong> for prioritisation:<ul><li><strong>Urgent + Important:</strong> Do now — crises, deadlines</li><li><strong>Not Urgent + Important:</strong> Schedule — planning, development (most neglected!)</li><li><strong>Urgent + Not Important:</strong> Delegate — interruptions, some meetings</li><li><strong>Not Urgent + Not Important:</strong> Eliminate — time wasters, trivia</li></ul>Most people spend too much time in 'urgent but not important' and not enough in 'not urgent but important'."},
+      {h:"Communication in Organisations", body:"<strong>Formal communication:</strong> Follows the chain of command — reports, memos, official emails. Reliable but slower.<br><strong>Informal communication (Grapevine):</strong> Unofficial channels — fast but often inaccurate and hard to control.<br><br>Communication barriers:<ul><li>Physical noise, information overload</li><li>Cultural and language differences</li><li>Emotional state, poor timing</li><li>Jargon and technical language</li></ul>"},
+      {h:"Conflict Resolution — Thomas-Kilmann", body:"Thomas and Kilmann identified five conflict-handling styles based on assertiveness vs cooperativeness:<ul><li><strong>Collaborating:</strong> Win-win — high on both. Best for complex issues where both parties' concerns matter.</li><li><strong>Competing:</strong> Win-lose — high assertiveness, low cooperation. Good for quick decisions.</li><li><strong>Compromising:</strong> Middle ground — moderate both. Adequate when a quick solution is needed.</li><li><strong>Accommodating:</strong> Lose-win — low assertiveness, high cooperation. Good for preserving relationships.</li><li><strong>Avoiding:</strong> Lose-lose — low on both. Withdrawing from conflict. Good when the issue is trivial.</li></ul>"},
+      {h:"CPD & Professional Development", body:"<strong>Continuing Professional Development (CPD)</strong> is the ongoing process of learning and development to maintain and enhance professional competence. ACCA requires all members to engage in CPD to maintain their practicing certificate and stay relevant.<br><br><strong>Mentoring:</strong> An experienced person guides a less experienced one. Long-term relationship.<br><strong>Coaching:</strong> A structured, short-term process focused on specific performance goals."}
+    ]
+  },
+  notes:[
+    {icon:"⏰",type:"teal",title:"Eisenhower Matrix",body:"The 'Important but Not Urgent' quadrant (Schedule) is where effective people spend most time — it includes strategic planning and personal development. Urgent tasks always feel important but often are not."},
+    {icon:"💬",type:"blue",title:"Communication Channels",body:"Choosing the right channel matters: face-to-face (richest, best for complex/emotional topics), video call, phone, email, letter (leanest, best for simple/formal messages). The richer the channel, the more information it conveys."},
+    {icon:"⚡",type:"amber",title:"Mentoring vs Coaching",body:"<strong>Mentoring:</strong> Long-term, holistic career guidance from an experienced colleague. <strong>Coaching:</strong> Short-term, focused on specific skills or performance goals. Often from an external professional."}
+  ],
+  formulas:[
+    {title:"EISENHOWER PRIORITY MATRIX",f:"Urgent + Important     → DO NOW (crises, deadlines)\nImportant + Not Urgent → SCHEDULE (planning, development)\nUrgent + Not Important → DELEGATE (interruptions)\nNot Urgent + Not Imp.  → ELIMINATE (time wasters)",note:"Covey called 'Important but Not Urgent' the Quadrant of Quality — most neglected but most valuable."},
+    {title:"THOMAS-KILMANN CONFLICT STYLES",f:"Collaborating  → Win-Win (high assert. + high coop.)\nCompeting      → Win-Lose (high assert. + low coop.)\nCompromising   → Middle ground\nAccommodating  → Lose-Win (low assert. + high coop.)\nAvoiding       → Lose-Lose (low + low)",note:""}
+  ],
+  tips:["Eisenhower: 'Important but Not Urgent' is the most valuable quadrant but gets neglected under pressure.","Formal communication = follows chain of command. Informal = grapevine. Grapevine is fast but unreliable.","CPD is a professional obligation for ACCA members. The exam may test what CPD involves and why it matters."]
+}
+];
+
+// ═══════════════════════════════════════════════════════════════
+// QUESTIONS DATABASE
+// ═══════════════════════════════════════════════════════════════
+const QUESTIONS = {
+1:[
+  {q:"According to Mendelow's Matrix, a stakeholder with HIGH power and HIGH interest should be:", opts:["Monitored only","Kept satisfied","Managed closely","Kept informed"], ans:2, exp:"High power + high interest = Manage Closely. These are 'key players' — they can significantly influence the organisation AND they care about it. Examples: major shareholders, key investors."},
+  {q:"Which of the following is an INTERNAL stakeholder?", opts:["A bank that provided a loan","A government tax authority","A finance department employee","A customer who buys regularly"], ans:2, exp:"Internal stakeholders work within the organisation — employees, directors, managers. Banks, government, and customers are external."},
+  {q:"A sole trader's main disadvantage compared to a limited company is:", opts:["Complex to set up","Cannot hire staff","Unlimited personal liability","Must publish accounts publicly"], ans:2, exp:"Sole traders have unlimited liability — their personal assets can be used to pay business debts. Limited companies protect shareholders from this."},
+  {q:"A company being a 'separate legal entity' means:", opts:["Its shares trade on a stock exchange","It can own assets and enter contracts in its own name","Directors have unlimited liability","It is owned by the government"], ans:1, exp:"A separate legal entity has its own legal identity — it can own property, sue and be sued, and enter contracts independently of its owners."},
+  {q:"Which stakeholder management strategy applies to stakeholders with HIGH power but LOW interest?", opts:["Manage closely","Keep satisfied","Keep informed","Monitor"], ans:1, exp:"High power + low interest = Keep Satisfied. They have the power to cause problems if unhappy, so you must maintain their satisfaction even though they aren't actively engaged."},
+  {q:"The PRIMARY objective of a private limited company is to:", opts:["Provide public services","Fulfil a social mission","Maximise shareholder wealth","Minimise tax payments"], ans:2, exp:"Private sector companies exist primarily to maximise shareholder wealth (profit). Public sector aims for value for money; charities aim to fulfil a social mission."},
+],
+2:[
+  {q:"PESTEL analysis is used to examine the:", opts:["Internal strengths of a business","Macro-environmental factors affecting a business","Competitive forces within an industry","Performance of individual products"], ans:1, exp:"PESTEL analyses macro-environmental factors — Political, Economic, Social, Technological, Environmental, Legal — that affect all businesses in an environment."},
+  {q:"Which of Porter's Five Forces refers to the ease with which new competitors can enter a market?", opts:["Competitive rivalry","Buyer power","Threat of new entrants","Supplier power"], ans:2, exp:"'Threat of new entrants' measures how easily new competitors can enter an industry. High barriers to entry (capital requirements, regulations) reduce this threat."},
+  {q:"A company selling the same product in a new international market is following which Ansoff strategy?", opts:["Diversification","Product development","Market penetration","Market development"], ans:3, exp:"Market development = existing product + new market. Entering a new geographic market with an existing product fits this strategy."},
+  {q:"Porter's cost leadership strategy involves:", opts:["Charging a premium for a unique product","Serving only a narrow market segment","Being the lowest-cost producer in an industry","Differentiating through branding"], ans:2, exp:"Cost leadership means producing at the lowest cost in the industry, enabling competitive pricing. It is distinct from differentiation (unique product) or focus (narrow segment)."},
+  {q:"A business 'stuck in the middle' according to Porter:", opts:["Has too many products","Lacks a clear competitive strategy and tends to underperform","Operates in a niche market","Has high supplier power"], ans:1, exp:"Porter argued that businesses without a clear generic strategy (cost leadership, differentiation, or focus) are 'stuck in the middle' and typically earn below-average returns."},
+  {q:"In the BCG matrix, a product with HIGH market share in a LOW growth market is classified as:", opts:["Star","Question Mark","Dog","Cash Cow"], ans:3, exp:"Cash Cows have high market share in a mature (low-growth) market. They generate steady cash with minimal investment — used to fund Stars and Question Marks."},
+],
+3:[
+  {q:"Which organisational structure combines functional departments with project teams, creating dual authority?", opts:["Functional","Divisional","Matrix","Entrepreneurial"], ans:2, exp:"A matrix structure overlays project teams on top of functional departments. Employees report to both a functional manager and a project manager — creating dual authority."},
+  {q:"According to Handy, an organisation driven by rules, procedures, and clearly defined roles is a:", opts:["Power culture","Task culture","Person culture","Role culture"], ans:3, exp:"Role culture (Greek temple) is characterised by rules, procedures, and defined roles. Power comes from position. Common in bureaucratic organisations like banks and the civil service."},
+  {q:"Decentralisation means:", opts:["All decisions are made at the top","Decision-making authority is delegated downward","The organisation has no hierarchy","Departments are merged into one"], ans:1, exp:"Decentralisation delegates decision-making authority downwards to lower levels. This speeds decisions and motivates staff but requires capable, trusted employees."},
+  {q:"A wide span of control results in:", opts:["A tall organisational structure","More management layers","A flat organisational structure","Slower decision-making"], ans:2, exp:"A wide span of control means each manager supervises many people, resulting in fewer management layers — a FLAT structure. Narrow span = many layers = TALL structure."},
+  {q:"Handy's 'Task culture' is represented by which symbol?", opts:["A spider's web","A Greek temple","A net or grid","A cluster of dots"], ans:2, exp:"Task culture is represented by a NET — flexible connections between people with different skills. Power comes from expertise, not position. Common in project-based organisations."},
+  {q:"Which Handy culture type is most common in small, owner-managed businesses?", opts:["Role culture","Task culture","Power culture","Person culture"], ans:2, exp:"Power culture (spider's web) radiates control from a central figure — typically the founder/owner of a small business. Fast decisions but dependent on one person."},
+],
+4:[
+  {q:"The agency problem in corporate governance arises because:", opts:["Companies must pay taxes","Directors may act in their own interests rather than shareholders'","External auditors are too expensive","NEDs interfere with management"], ans:1, exp:"The agency problem: shareholders (principals) delegate management to directors (agents). Agents may prioritise personal gain over shareholder interests — hence governance structures are needed."},
+  {q:"Which of the following is one of ACCA's five fundamental ethical principles?", opts:["Profitability","Transparency","Objectivity","Accountability"], ans:2, exp:"Objectivity is one of ACCA's five principles (Integrity, Objectivity, Professional Competence & Due Care, Confidentiality, Professional Behaviour). The others listed are not ACCA principles."},
+  {q:"In Carroll's CSR pyramid, which level forms the FOUNDATION?", opts:["Philanthropic","Legal","Ethical","Economic"], ans:3, exp:"The Economic level is the foundation of Carroll's pyramid. Without profitability, a business cannot sustain its legal, ethical, or philanthropic responsibilities."},
+  {q:"Non-Executive Directors (NEDs) are primarily responsible for:", opts:["Day-to-day operational management","Signing off tax returns","Providing independent oversight of the board","Managing the finance function"], ans:2, exp:"NEDs provide independent scrutiny and challenge to the executive board. They do not manage operations. They sit on audit and remuneration committees to ensure governance."},
+  {q:"An accountant who discovers fraud but stays silent to protect a client is violating which ACCA principle?", opts:["Objectivity","Confidentiality","Integrity","Professional Competence"], ans:2, exp:"Integrity requires accountants to be straightforward and honest. Staying silent about fraud when public interest is at stake violates the duty to act with integrity, even if it conflicts with confidentiality."},
+  {q:"Whistleblowing refers to:", opts:["A manager dismissing an employee","Reporting suspected wrongdoing in the public interest","Refusing to complete a task on ethical grounds","Resigning from a position due to ethical conflict"], ans:1, exp:"Whistleblowing is the disclosure of information about suspected wrongdoing to an appropriate authority, made in the public interest. Many jurisdictions provide legal protection to whistleblowers."},
+],
+5:[
+  {q:"According to Herzberg, which of the following is a HYGIENE factor?", opts:["Achievement","Recognition","Job security","Responsibility"], ans:2, exp:"Hygiene factors (extrinsic) include salary, working conditions, job security, and company policy. Their absence causes dissatisfaction but their presence does NOT motivate. Achievement and recognition are motivators."},
+  {q:"Maslow's hierarchy suggests that an employee will only be motivated by esteem needs once their _____ needs are met.", opts:["Self-actualisation","Physiological and safety and social","Philanthropic","Financial"], ans:1, exp:"Maslow's hierarchy is sequential. Esteem (level 4) is only a motivator once physiological (1), safety (2), and social (3) needs are sufficiently satisfied."},
+  {q:"A manager who believes workers are self-motivated and seek responsibility holds which McGregor view?", opts:["Theory X","Theory Z","Theory W","Theory Y"], ans:3, exp:"Theory Y managers believe workers are inherently motivated, enjoy work, and seek responsibility. This leads to participative, empowering management styles."},
+  {q:"Vroom's Expectancy Theory states that motivation = Expectancy × Instrumentality × Valence. If Valence = 0, motivation is:", opts:["High","Moderate","Zero","Unpredictable"], ans:2, exp:"The formula is multiplicative. If any factor equals zero, the product is zero. If the reward is not valued (Valence = 0), there is no motivation regardless of expectancy or instrumentality."},
+  {q:"A 360-degree appraisal collects feedback from:", opts:["The employee's line manager only","The HR department only","Multiple sources including peers, subordinates, and self","Only the most senior director"], ans:2, exp:"360-degree appraisal gathers feedback from all directions: supervisor, peers, subordinates, and self-assessment. This gives a comprehensive, multi-perspective view of performance."},
+  {q:"Which document describes the TASKS and RESPONSIBILITIES of a vacant role?", opts:["Person specification","Appraisal form","Job description","Employment contract"], ans:2, exp:"A job description outlines the duties, responsibilities, and reporting line of a specific role. A person specification describes the skills, qualifications, and attributes the ideal candidate must have."},
+],
+6:[
+  {q:"Which of Fayol's functions of management involves monitoring performance against plans?", opts:["Organising","Planning","Commanding","Controlling"], ans:3, exp:"Controlling is the function where actual performance is measured against planned objectives, and corrective action is taken where needed. It is the final of Fayol's five functions."},
+  {q:"'Doing things right' refers to management's focus on:", opts:["Effectiveness","Strategy","Efficiency","Innovation"], ans:2, exp:"Drucker distinguished: Management = 'doing things right' (efficiency — resource use). Leadership = 'doing the right things' (effectiveness — achieving the right goals)."},
+  {q:"Which leadership style gives the team complete freedom to make decisions?", opts:["Autocratic","Transactional","Democratic","Laissez-faire"], ans:3, exp:"Laissez-faire (hands-off) leadership involves full delegation — the leader provides minimal direction. Effective with highly skilled experts but risky with inexperienced teams."},
+  {q:"Adair's Action-Centred Leadership focuses on three overlapping needs. Which of the following is NOT one of them?", opts:["Task","Team","Individual","Financial"], ans:3, exp:"Adair's three circles are: Task (get the job done), Team (maintain the group), and Individual (meet individual needs). Financial performance is not one of the three circles."},
+  {q:"A transformational leader primarily motivates through:", opts:["Close monitoring and rewards","Vision, inspiration, and shared values","Strict rules and punishment","Financial incentives only"], ans:1, exp:"Transformational leaders inspire followers through a compelling vision and shared values. They seek to change the organisation and develop follower commitment beyond self-interest."},
+  {q:"Emotional Intelligence, as defined by Goleman, includes which of the following?", opts:["Technical expertise","Empathy","Quantitative reasoning","Financial acumen"], ans:1, exp:"Goleman's five components of Emotional Intelligence: self-awareness, self-regulation, motivation, empathy, and social skills. Technical/financial skills are not part of EI."},
+],
+7:[
+  {q:"Management accounting differs from financial accounting in that it is:", opts:["Mandatory for all companies","Regulated by IFRS","Primarily for internal decision-making","Historical and backward-looking"], ans:2, exp:"Management accounting provides information for internal managers — budgets, forecasts, cost analysis. It is not regulated by external standards and is forward-looking, unlike financial accounting."},
+  {q:"Internal audit reports to which body to maintain independence?", opts:["The Chief Financial Officer","The finance director","The audit committee of the board","The external auditors"], ans:2, exp:"Internal audit must be independent of management. It reports to the audit committee (a board-level sub-committee) — NOT to management. This protects its objectivity."},
+  {q:"Which internal control principle ensures that no single person can authorise, execute, and record a transaction?", opts:["Physical controls","Reconciliation","Supervision","Segregation of duties"], ans:3, exp:"Segregation of duties splits the responsibilities for initiating, executing, and recording transactions among different people. This prevents any individual from committing and concealing fraud."},
+  {q:"The treasury function is responsible for:", opts:["Preparing financial statements","Conducting internal audits","Managing cash, funding, and financial risk","Preparing management accounts"], ans:2, exp:"The treasury function manages the organisation's financial resources: cash liquidity, raising finance, managing foreign currency and interest rate risk, and investing surplus funds."},
+  {q:"Which type of control is designed to IDENTIFY errors AFTER they have occurred?", opts:["Preventive control","Physical control","Detective control","Corrective control"], ans:2, exp:"Detective controls (e.g. bank reconciliations, internal audit) identify errors or fraud after they have occurred. Preventive controls (e.g. authorisation, segregation) stop them from happening in the first place."},
+  {q:"External auditors are appointed by and report to:", opts:["The board of directors","Management","Shareholders","The internal audit department"], ans:2, exp:"External auditors are appointed by and report to SHAREHOLDERS. Their role is to give an independent opinion on whether the financial statements show a true and fair view."},
+],
+8:[
+  {q:"Which characteristic of good information ensures it is available when a decision must be made?", opts:["Accuracy","Completeness","Relevance","Timeliness"], ans:3, exp:"Timeliness means information is available when needed for the decision. Out-of-date information, no matter how accurate, has reduced value."},
+  {q:"An Executive Information System (EIS) is primarily used by:", opts:["Shop floor workers","Middle managers for reports","Senior executives for strategic decisions","IT technicians"], ans:2, exp:"EIS provides high-level summaries and key indicators to senior executives for strategic decision-making. It can drill down into detail. TPS handles operational data at the shop floor level."},
+  {q:"The '3Vs' of Big Data are:", opts:["Value, Vision, Velocity","Volume, Velocity, Variety","Value, Volume, Vision","Veracity, Value, Velocity"], ans:1, exp:"The 3Vs of Big Data: Volume (huge amounts), Velocity (generated rapidly), Variety (many formats including structured and unstructured data)."},
+  {q:"SaaS (Software as a Service) in cloud computing means:", opts:["Renting virtual hardware infrastructure","Providing a platform for developers","Delivering software applications over the internet","Storing physical servers on-site"], ans:2, exp:"SaaS delivers fully built software applications over the internet (e.g. Microsoft 365, Salesforce). PaaS = platform for developers to build apps. IaaS = virtual hardware/servers."},
+  {q:"Which GDPR principle states that data should only be collected for a specific, stated purpose?", opts:["Data minimisation","Purpose limitation","Storage limitation","Accuracy"], ans:1, exp:"Purpose limitation means personal data can only be collected for a specific, legitimate purpose and cannot be used for a different purpose without further consent."},
+  {q:"Which information quality means the information is free from errors?", opts:["Timeliness","Relevance","Accuracy","Completeness"], ans:2, exp:"Accuracy is the 'A' in ACCURATE — information must be free from errors, mistakes, and biases. Inaccurate information leads to poor decisions."},
+],
+9:[
+  {q:"In the Eisenhower Matrix, tasks that are IMPORTANT but NOT URGENT should be:", opts:["Done immediately","Delegated","Eliminated","Scheduled"], ans:3, exp:"Important but not urgent tasks (planning, development, relationship-building) should be SCHEDULED. These are often the most valuable long-term activities but get neglected when people focus on urgent tasks."},
+  {q:"The 'grapevine' in an organisation refers to:", opts:["A formal reporting system","An unofficial, informal communication network","A type of intranet","A grievance procedure"], ans:1, exp:"The grapevine is informal, unofficial communication — rumours, gossip, and news spread through personal networks. It is fast but often inaccurate and cannot be easily controlled by management."},
+  {q:"According to Thomas-Kilmann, which conflict style is BOTH high in assertiveness AND high in cooperativeness?", opts:["Competing","Avoiding","Compromising","Collaborating"], ans:3, exp:"Collaborating (Win-Win) is both highly assertive and highly cooperative. It seeks a solution that fully satisfies both parties. Best for complex issues where both sides' concerns are important."},
+  {q:"Continuing Professional Development (CPD) is:", opts:["A one-time qualification","Ongoing learning to maintain and develop professional competence","An annual exam requirement","Only required for senior accountants"], ans:1, exp:"CPD is ongoing — it continues throughout a professional's career. ACCA members must engage in CPD to maintain their designation and stay up-to-date with developments in their field."},
+  {q:"Which communication channel is considered the RICHEST for conveying complex or emotional messages?", opts:["Email","Formal letter","Face-to-face","Text message"], ans:2, exp:"Face-to-face communication is the richest channel — it conveys words, tone of voice, body language, and facial expressions simultaneously. It is best for complex, sensitive, or emotional messages."},
+  {q:"Coaching in a professional context differs from mentoring in that coaching is:", opts:["Long-term and holistic","Provided by a senior colleague in the same field","Short-term and focused on specific performance goals","Only for junior employees"], ans:2, exp:"Coaching is typically short-term and goal-focused, addressing specific performance or skill development. Mentoring is a longer-term relationship providing broader career guidance from an experienced person."},
+]
+};
+
+// Flatten all for full mock
+const ALL_Q = Object.values(QUESTIONS).flat();
+
+// ═══════════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════════
+let state = {
+  numQ: 10,
+  qs: [],
+  cur: 0,
+  score: 0,
+  answered: false,
+  timerInt: null,
+  timeLeft: 72,
+  retryFn: null,
+  topicsDone: new Set(JSON.parse(localStorage.getItem('bt-done') || '[]')),
+  activeChapter: null,
+  chapterNumQ: 5
+};
+
+function saveProgress() {
+  localStorage.setItem('bt-done', JSON.stringify([...state.topicsDone]));
+  updateHomeProgress();
+}
+
+function updateHomeProgress() {
+  const pct = Math.round((state.topicsDone.size / CHAPTERS.length) * 100);
+  document.getElementById('h-fill').style.width = pct + '%';
+  document.getElementById('h-pct').textContent = pct + '%';
+  renderHomeChips();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// NAV
+// ═══════════════════════════════════════════════════════════════
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if (id === 'chapters') renderChapterList();
+  if (id === 'cheatsheet') renderCheatSheet();
+  if (id === 'home') updateHomeProgress();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// HOME CHIPS
+// ═══════════════════════════════════════════════════════════════
+function renderHomeChips() {
+  const wrap = document.getElementById('home-chips');
+  if (!wrap) return;
+  wrap.innerHTML = CHAPTERS.map(c => `
+    <div class="chip ${state.topicsDone.has(c.id)?'done':''}" onclick="openChapter(${c.id})">
+      Ch${c.id}: ${c.name.split(' ').slice(0,2).join(' ')}
+    </div>`).join('');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CHAPTER LIST
+// ═══════════════════════════════════════════════════════════════
+function renderChapterList() {
+  document.getElementById('ch-list').innerHTML = CHAPTERS.map(c => `
+    <div class="ch-card ${state.topicsDone.has(c.id)?'done':''}" onclick="openChapter(${c.id})">
+      <div class="ch-num">${state.topicsDone.has(c.id)?'✓':c.code}</div>
+      <div class="ch-info">
+        <h3>Ch${c.id}: ${c.name}</h3>
+        <p>${c.desc}</p>
+        <div class="ch-pills">
+          <span class="pill has">📘 Lecture</span>
+          <span class="pill has">📝 Notes</span>
+          <span class="pill has">📐 Formulas</span>
+          <span class="pill has">🎯 Mock</span>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CHAPTER DETAIL
+// ═══════════════════════════════════════════════════════════════
+function openChapter(id) {
+  const c = CHAPTERS.find(x => x.id === id);
+  state.activeChapter = id;
+  document.getElementById('cd-title').textContent = `Ch${c.id}: ${c.name}`;
+  document.getElementById('cd-sub').textContent = c.desc;
+
+  // reset tabs
+  document.querySelectorAll('.ch-tab').forEach((t,i) => t.classList.toggle('active', i===0));
+  document.querySelectorAll('.tab-pane').forEach((p,i) => p.classList.toggle('active', i===0));
+
+  renderLecture(c);
+  renderNotes(c);
+  renderFormulas(c);
+  renderChapterMock(c);
+  showScreen('chapter-detail');
+}
+
+function switchTab(idx) {
+  document.querySelectorAll('.ch-tab').forEach((t,i) => t.classList.toggle('active', i===idx));
+  document.querySelectorAll('.tab-pane').forEach((p,i) => p.classList.toggle('active', i===idx));
+}
+
+// ── Lecture ──
+function renderLecture(c) {
+  const l = c.lecture;
+  document.getElementById('cd-lecture').innerHTML = `
+    <div class="lecture-section">
+      <div class="ls-label">Chapter ${c.id} · Area ${c.code}</div>
+      <div class="ls-title">${c.name}</div>
+      <p class="ls-intro">${l.intro}</p>
+      ${l.blocks.map(b => `
+        <div class="lecture-block">
+          <div class="lb-heading"><span class="dot"></span>${b.h}</div>
+          <div class="lb-body">${b.body}</div>
+          ${b.example ? `<div class="example-box"><div class="eb-label">📌 Example</div><div class="eb-body">${b.example}</div></div>` : ''}
+        </div>`).join('')}
+      <div style="height:16px;"></div>
+      <button onclick="markChapterDone(${c.id})" style="background:var(--green);color:#0e0f14;border:none;border-radius:var(--r);padding:13px;width:100%;font-size:14px;font-weight:700;cursor:pointer;font-family:'Sora',sans-serif;">
+        ${state.topicsDone.has(c.id)?'✓ Marked as Complete':'Mark Lecture as Complete ✓'}
+      </button>
+      <div style="height:20px;"></div>
+    </div>`;
+}
+
+// ── Notes ──
+function renderNotes(c) {
+  const tipHTML = c.tips ? c.tips.map(t => `
+    <div class="tip-box">
+      <div class="tip-label">🎯 EXAM TIP</div>
+      <div class="tip-body">${t}</div>
+    </div>`).join('') : '';
+  document.getElementById('cd-notes').innerHTML = `
+    <div class="notes-section">
+      ${c.notes.map(n => `
+        <div class="note-card">
+          <div class="nc-header">
+            <div class="nc-icon ${n.type}">${n.icon}</div>
+            <div class="nc-title">${n.title}</div>
+          </div>
+          <div class="nc-body">${n.body}</div>
+        </div>`).join('')}
+    </div>
+    <div class="notes-section">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--teal);text-transform:uppercase;margin-bottom:10px;">Exam Tips</div>
+      ${tipHTML}
+    </div>
+    <div style="height:20px;"></div>`;
+}
+
+// ── Formulas ──
+function renderFormulas(c) {
+  document.getElementById('cd-formulas').innerHTML = c.formulas.length
+    ? c.formulas.map(f => `
+        <div class="formula-card">
+          <div class="fc-title">${f.title}</div>
+          <div class="fc-formula">${f.f.replace(/\n/g,'<br>')}</div>
+          ${f.note ? `<div class="fc-note">💡 ${f.note}</div>` : ''}
+        </div>`).join('') + '<div style="height:20px;"></div>'
+    : '<div style="padding:20px;color:var(--muted);font-size:13px;">No specific formulas for this chapter — focus on key concepts and frameworks in the Notes tab.</div>';
+}
+
+// ── Chapter Mock ──
+function renderChapterMock(c) {
+  const available = (QUESTIONS[c.id] || []).length;
+  document.getElementById('cd-mock').innerHTML = `
+    <div class="mock-setup-inner">
+      <div class="ms-title">Chapter Mock: ${c.name}</div>
+      <p class="ms-sub">${available} questions available for this chapter. Choose how many to attempt:</p>
+      <div class="q-count-row">
+        ${[3,5,available].filter((v,i,a)=>a.indexOf(v)===i&&v<=available).map((n,i) => `
+          <div class="qc-btn ${i===1?'sel':''}" onclick="selChQ(${n},this)">
+            <div class="n">${n}</div>
+            <div class="l">${n===available?'All':n===3?'Quick':'Standard'}</div>
+          </div>`).join('')}
+      </div>
+      <div class="info-banner">
+        <div class="ib-lbl">Chapter ${c.id} Focus Areas</div>
+        <div class="ib-body">${c.desc}</div>
+      </div>
+      <button class="ch-start-btn" onclick="launchChapterMock(${c.id})">Start Chapter Mock →</button>
+      <div style="height:20px;"></div>
+    </div>`;
+  state.chapterNumQ = Math.min(5, available);
+}
+
+function selChQ(n, el) {
+  state.chapterNumQ = n;
+  document.querySelectorAll('.qc-btn').forEach(b => b.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+function markChapterDone(id) {
+  state.topicsDone.add(id);
+  saveProgress();
+  // re-render lecture button
+  const c = CHAPTERS.find(x => x.id === id);
+  if (c) renderLecture(c);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// MOCK LAUNCHER
+// ═══════════════════════════════════════════════════════════════
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length-1; i > 0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+function selQ(n, el) {
+  state.numQ = n;
+  document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+function launchMock(chapterId) {
+  const pool = chapterId ? (QUESTIONS[chapterId] || []) : ALL_Q;
+  const limit = chapterId ? state.chapterNumQ : state.numQ;
+  state.qs = shuffle(pool).slice(0, Math.min(limit, pool.length));
+  state.cur = 0;
+  state.score = 0;
+  state.retryFn = () => launchMock(chapterId);
+  showScreen('quiz');
+  renderQ();
+}
+
+function launchChapterMock(id) {
+  launchMock(id);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// QUIZ ENGINE
+// ═══════════════════════════════════════════════════════════════
+function renderQ() {
+  const q = state.qs[state.cur];
+  state.answered = false;
+  document.getElementById('q-cnt').textContent = `Q${state.cur+1}/${state.qs.length}`;
+  document.getElementById('qpf').style.width = (state.cur/state.qs.length*100)+'%';
+  const letters = ['A','B','C','D'];
+  document.getElementById('qbody').innerHTML = `
+    <div class="q-tag">Chapter ${getChapterForQ(q)}</div>
+    <div class="q-text">${q.q}</div>
+    <ul class="opts">
+      ${q.opts.map((o,i) => `
+        <button class="ob" id="ob${i}" onclick="answerQ(${i})">
+          <span class="ol">${letters[i]}</span><span>${o}</span>
+        </button>`).join('')}
+    </ul>
+    <div class="exp-box" id="exp"><strong>Explanation:</strong> ${q.exp}</div>
+    <button class="nxt" id="nxt" onclick="nextQ()">${state.cur+1<state.qs.length?'Next Question →':'See Results →'}</button>`;
+  startTimer();
+}
+
+function getChapterForQ(q) {
+  for (const [id, qs] of Object.entries(QUESTIONS)) {
+    if (qs.includes(q)) return id;
+  }
+  return '?';
+}
+
+function startTimer() {
+  clearInterval(state.timerInt);
+  state.timeLeft = 72;
+  updateTimer();
+  state.timerInt = setInterval(() => {
+    state.timeLeft--;
+    updateTimer();
+    if (state.timeLeft <= 0) { clearInterval(state.timerInt); if (!state.answered) timeout(); }
+  }, 1000);
+}
+
+function updateTimer() {
+  const el = document.getElementById('qtimer');
+  if (!el) return;
+  const m = Math.floor(state.timeLeft/60), s = state.timeLeft%60;
+  el.textContent = `${m}:${s.toString().padStart(2,'0')}`;
+  el.className = 'timer' + (state.timeLeft<=15?' hot':'');
+}
+
+function timeout() {
+  state.answered = true;
+  const q = state.qs[state.cur];
+  document.getElementById(`ob${q.ans}`).classList.add('reveal');
+  document.getElementById('exp').classList.add('show');
+  const nxt = document.getElementById('nxt');
+  nxt.classList.add('show');
+  nxt.textContent = (state.cur+1<state.qs.length?'Next →':'Results →') + ' ⏱';
+}
+
+function answerQ(i) {
+  if (state.answered) return;
+  state.answered = true;
+  clearInterval(state.timerInt);
+  const q = state.qs[state.cur];
+  document.querySelectorAll('.ob').forEach(b => b.disabled = true);
+  if (i === q.ans) {
+    state.score++;
+    document.getElementById(`ob${i}`).classList.add('ok');
+  } else {
+    document.getElementById(`ob${i}`).classList.add('ng');
+    document.getElementById(`ob${q.ans}`).classList.add('reveal');
+  }
+  document.getElementById('exp').classList.add('show');
+  document.getElementById('nxt').classList.add('show');
+}
+
+function nextQ() {
+  state.cur++;
+  if (state.cur >= state.qs.length) showResults();
+  else renderQ();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// RESULTS
+// ═══════════════════════════════════════════════════════════════
+function showResults() {
+  clearInterval(state.timerInt);
+  showScreen('results');
+  const total = state.qs.length;
+  const pct = Math.round(state.score/total*100);
+  const pass = pct >= 50;
+
+  document.getElementById('rn').textContent = state.score;
+  document.getElementById('rd').textContent = total;
+  document.getElementById('rc').textContent = state.score;
+  document.getElementById('rw').textContent = total - state.score;
+  document.getElementById('rp').textContent = pct + '%';
+
+  const arc = document.getElementById('res-arc');
+  arc.style.stroke = pass ? '#4ade80' : '#ff5f5f';
+  setTimeout(() => { arc.style.strokeDashoffset = 376.99 - (376.99 * pct / 100); }, 100);
+
+  const badge = document.getElementById('rbadge');
+  badge.textContent = pass ? '✓ PASS' : '✗ FAIL';
+  badge.className = 'res-badge ' + (pass ? 'pass' : 'fail');
+
+  const msgs = pass
+    ? ["Excellent result! You're well prepared for BT.", "Great work — above pass mark. Keep studying to maximise your score!", "Strong performance. Review any topics you're less confident on."]
+    : ["Review the explanations carefully and try again — you've got this!", "Close! A few more study sessions and you'll be ready.", "Don't worry — each attempt builds your understanding. Study the notes and retry."];
+  document.getElementById('rmsg').textContent = msgs[Math.floor(Math.random()*msgs.length)];
+
+  document.getElementById('r-retry').onclick = () => state.retryFn ? state.retryFn() : launchMock(null);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CHEAT SHEET
+// ═══════════════════════════════════════════════════════════════
+function renderCheatSheet() {
+  document.getElementById('cs-body').innerHTML = `
+    <div class="css-section">
+      <div class="css-label">Stakeholders & Structure</div>
+      <div class="css-item"><h4>Mendelow's Matrix</h4><p><code>High Power + High Interest → Manage Closely<br>High Power + Low Interest → Keep Satisfied<br>Low Power + High Interest → Keep Informed<br>Low Power + Low Interest → Monitor</code></p></div>
+      <div class="css-item"><h4>Handy's Cultures</h4><p><code>Power → Web | Role → Temple | Task → Net | Person → Cluster</code></p></div>
+    </div>
+    <div class="css-section">
+      <div class="css-label">Strategy Frameworks</div>
+      <div class="css-item"><h4>Ansoff Matrix</h4><p><code>Existing+Existing=Penetration | New Product+Existing=Prod Dev<br>Existing+New Market=Mkt Dev | New+New=Diversification (highest risk)</code></p></div>
+      <div class="css-item"><h4>Porter's Five Forces</h4><p>Competitive Rivalry · New Entrants · Substitutes · Buyer Power · Supplier Power</p></div>
+      <div class="css-item"><h4>BCG Matrix</h4><p>Stars (high/high) · Cash Cows (high share/low growth) · Question Marks (low share/high growth) · Dogs (low/low)</p></div>
+    </div>
+    <div class="css-section">
+      <div class="css-label">Motivation Theories</div>
+      <div class="css-item"><h4>Maslow's Hierarchy</h4><p>1 Physiological → 2 Safety → 3 Social → 4 Esteem → 5 Self-Actualisation</p></div>
+      <div class="css-item"><h4>Herzberg</h4><p><strong>Hygiene factors</strong> (prevent dissatisfaction): salary, security, conditions<br><strong>Motivators</strong> (create satisfaction): achievement, recognition, responsibility</p></div>
+      <div class="css-item"><h4>Vroom's Expectancy</h4><p><code>Motivation = Expectancy × Instrumentality × Valence</code><br>If ANY = 0 → Motivation = 0</p></div>
+    </div>
+    <div class="css-section">
+      <div class="css-label">Ethics & Governance</div>
+      <div class="css-item"><h4>ACCA 5 Principles</h4><p>Integrity · Objectivity · Professional Competence · Confidentiality · Professional Behaviour</p></div>
+      <div class="css-item"><h4>Carroll's CSR Pyramid</h4><p>(Base) Economic → Legal → Ethical → (Top) Philanthropic</p></div>
+    </div>
+    <div class="css-section">
+      <div class="css-label">Technology & Management</div>
+      <div class="css-item"><h4>ACCURATE (Good Information)</h4><p><code>Accurate · Complete · Cost-beneficial · Understandable<br>Relevant · Accessible · Timely · Easy to use</code></p></div>
+      <div class="css-item"><h4>Fayol's 5 Management Functions</h4><p>Planning · Organising · Commanding · Co-ordinating · Controlling</p></div>
+      <div class="css-item"><h4>Eisenhower Matrix</h4><p><code>Urgent+Important → Do | Important+Not Urgent → Schedule<br>Urgent+Not Imp → Delegate | Neither → Eliminate</code></p></div>
+      <div class="css-item"><h4>BT Exam Pass Mark</h4><p><strong>50%</strong> (30/60 questions) · 72 minutes · Computer-based</p></div>
+    </div>
+    <div style="height:24px;"></div>
+  `;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════
+updateHomeProgress();
+renderHomeChips();
+</script>
+</body>
+</html>
